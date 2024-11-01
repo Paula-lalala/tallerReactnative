@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, Button } from 'react-native';
+import { useRouter } from 'expo-router';
 
 interface PlatoCarta {
   id: number;
@@ -10,17 +11,24 @@ interface PlatoCarta {
 }
 
 interface PlatoCartaProps {
-  Plato: PlatoCarta;
+  plato: PlatoCarta;
 }
 
-const PlatoCarta: React.FC<PlatoCartaProps> = ({ Plato }) => {
+const PlatoCarta: React.FC<PlatoCartaProps> = ({ plato }) => {
+  const router = useRouter();
+
+  const verDetalle = () => {
+    router.push(`/screens/Detalle?id=${plato.id}&name=${plato.name}&image=${plato.image}&price=${plato.price}&description=${plato.description}`);
+  };
+
   return (
     <View style={styles.card}>
-      <Image source={{ uri: Plato.image }} style={styles.image} />
+      <Image source={{ uri: plato.image }} style={styles.image} />
       <View style={styles.info}>
-        <Text style={styles.name}>{Plato.name}</Text>
-        <Text style={styles.price}>${Plato.price}</Text>
-        <Text style={styles.description}>{Plato.description}</Text>
+        <Text style={styles.name}>{plato.name}</Text>
+        <Text style={styles.price}>${plato.price}</Text>
+        <Text style={styles.description}>{plato.description}</Text>
+        <Button title="Ver Detalle" onPress={verDetalle} />
       </View>
     </View>
   );
@@ -36,3 +44,4 @@ const styles = StyleSheet.create({
 });
 
 export default PlatoCarta;
+

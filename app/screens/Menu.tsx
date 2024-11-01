@@ -25,7 +25,7 @@ const Menu: React.FC = () => {
 
   const detalle = (item: Plato) => {
     router.push({
-      pathname: './screens/detalle', // O la ruta correspondiente
+      pathname: './screens/Detalle', // O la ruta correspondiente
       params: { 
         id: item.id,
         name: item.name,
@@ -54,7 +54,7 @@ const Menu: React.FC = () => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
             <TouchableOpacity key={item.id} onPress={() => detalle(item)}>
-            <PlatoCarta Plato={item} />
+            <PlatoCarta plato={item} />
           </TouchableOpacity>
         )}
       />

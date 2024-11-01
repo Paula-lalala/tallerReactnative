@@ -1,27 +1,30 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, Button } from 'react-native';
+import { View, Text, Image, StyleSheet, Button, TouchableOpacity, Modal, } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useCarrito } from '../contexts/Carrito';
+import { agregarAlCarrito } from '@/hooks/storage';
 
-const detalle: React.FC = () => {
+const Detalle: React.FC = () => {
   const { id, name, image, price, description } = useLocalSearchParams();
-  const router = useRouter();  
-  const { agregarAlCarrito } = useCarrito();
-  console.log("Detalle component rendered");  
+  const router = useRouter();
+  const [modalVisible, setModalVisible] = useState(false);  
   const [cantidad, setCantidad] = useState(1);  
     
-  const VolverMenu = () => {
+  const volverMenu = () => {
     router.back();
   };
 
-  const Carrito = () => {
-    agregarAlCarrito(
+  const agregarCarrito = async () => {
+    await agregarAlCarrito(
       { id: id as string, name: name as string, image: image as string, price: Number(price), description: description as string },
       cantidad
     );
-    alert(`Agregado al carrito: ${name}, Cantidad: ${cantidad}`);
-    router.back();
+    setModalVisible(true);
   };
+
+  const cerrarModal = () => {
+    setModalVisible(false);
+  };
+  
   return (
     <View style={styles.container}>
       <Image source={{ uri: image as string }} style={styles.image} />
@@ -34,13 +37,33 @@ const detalle: React.FC = () => {
         <Text style={styles.cantidadText}>{cantidad}</Text>
         <Button title="+" onPress={() => setCantidad(cantidad + 1)} />
       </View>
-        <View style={styles.buttonContainer}>
-        <Button title="Agregar al Carrito" onPress={Carrito} />
+
+      <TouchableOpacity style={styles.buttonContainer} onPress={agregarCarrito}>
+        <View style={styles.button}>
+          <Text style={styles.buttonText}>Agregar al Carrito</Text>
         </View>
-        <View style={styles.buttonContainer}>
-        <Button title="Volver al Menú" onPress={VolverMenu} />
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.buttonContainer} onPress={volverMenu}>
+        <View style={styles.button}>
+          <Text style={styles.buttonText}>Volver al Menú</Text>
         </View>
-      
+      </TouchableOpacity>
+
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={cerrarModal}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>¡Agregado al carrito!</Text>
+            <Button title="Cerrar" onPress={cerrarModal} />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -75,6 +98,27 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginVertical: 10,
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
 });
 
-export default detalle;
+
+export default Detalle;
+
+
+
