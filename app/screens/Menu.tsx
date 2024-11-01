@@ -3,6 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native
 import { useRouter } from 'expo-router';
 import PlatoCarta from '../components/PlatoCarta';
 
+
 interface Plato {
   id: number;
   name: string;
@@ -22,7 +23,7 @@ const Menu: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('Todas');
   const router = useRouter();
 
-  const DetallePlato = (item: Plato) => {
+  const detalle = (item: Plato) => {
     router.push({
       pathname: './screens/detalle', // O la ruta correspondiente
       params: { 
@@ -42,7 +43,7 @@ const Menu: React.FC = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Menú</Text>
       <View style={styles.categoryContainer}>
-        {['Todas', 'Bebidas Frías', 'Bebidas Calientes'].map(category => (
+        {['Todas', 'Bebidas Frías', 'Bebidas Calientes', 'Sopas', 'Platos del día', 'Platos de la carta', 'Menú infantil'].map(category => (
           <TouchableOpacity key={category} onPress={() => setSelectedCategory(category)} style={styles.categoryButton}>
             <Text style={[styles.categoryText, selectedCategory === category && styles.selectedCategory]}>{category}</Text>
           </TouchableOpacity>
@@ -52,7 +53,7 @@ const Menu: React.FC = () => {
         data={filteredPlatos}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-            <TouchableOpacity key={item.id} onPress={() => DetallePlato(item)}>
+            <TouchableOpacity key={item.id} onPress={() => detalle(item)}>
             <PlatoCarta Plato={item} />
           </TouchableOpacity>
         )}

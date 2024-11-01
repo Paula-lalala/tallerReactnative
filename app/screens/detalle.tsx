@@ -1,21 +1,27 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, Button } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useCarrito } from '../contexts/Carrito';
 
-const DetallePlato: React.FC = () => {
+const detalle: React.FC = () => {
   const { id, name, image, price, description } = useLocalSearchParams();
-  const router = useRouter();
-
+  const router = useRouter();  
+  const { agregarAlCarrito } = useCarrito();
+  console.log("Detalle component rendered");  
   const [cantidad, setCantidad] = useState(1);  
     
   const VolverMenu = () => {
     router.back();
   };
 
-  const agregarAlCarrito = () => {
-    console.log(`Agregado al carrito: ${name}, Cantidad: ${cantidad}`);
+  const Carrito = () => {
+    agregarAlCarrito(
+      { id: id as string, name: name as string, image: image as string, price: Number(price), description: description as string },
+      cantidad
+    );
+    alert(`Agregado al carrito: ${name}, Cantidad: ${cantidad}`);
+    router.back();
   };
-
   return (
     <View style={styles.container}>
       <Image source={{ uri: image as string }} style={styles.image} />
@@ -29,7 +35,7 @@ const DetallePlato: React.FC = () => {
         <Button title="+" onPress={() => setCantidad(cantidad + 1)} />
       </View>
         <View style={styles.buttonContainer}>
-        <Button title="Agregar al Carrito" onPress={agregarAlCarrito} />
+        <Button title="Agregar al Carrito" onPress={Carrito} />
         </View>
         <View style={styles.buttonContainer}>
         <Button title="Volver al Menú" onPress={VolverMenu} />
@@ -45,7 +51,6 @@ const styles = StyleSheet.create({
   name: { fontSize: 24, fontWeight: 'bold' },
   price: { fontSize: 18, color: 'green', marginVertical: 8 },
   description: { fontSize: 16, color: '#555' },
-  // Estilos opcionales para el botón personalizado
   cantidadContainer: { 
     flexDirection: 'row', 
     alignItems: 'center', 
@@ -72,4 +77,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DetallePlato;
+export default detalle;
