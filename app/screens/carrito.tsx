@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Button, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, FlatList, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { obtenerCarrito, vaciarCarrito, eliminarDelCarrito, guardarHistorial } from '@/hooks/storage';
+
+export interface Compra {
+  id: string;
+  date: string;
+  items: CarritoItem[];
+}
 
 export interface CarritoItem {
     id: string;
@@ -24,24 +30,29 @@ const Carrito: React.FC = () => {
         setCarrito(itemsCarrito);
     };
     
-    const confirmarCompra = async () => {
-            console.log("Confirmando compra...");
-            await guardarHistorial();
-            await vaciarCarrito();
-            Alert.alert("Compra Confirmada", "Tu compra ha sido registrada en el historial.", [
-                {
-                    text: "OK",
-                    onPress: () => {
-                        cargarCarrito();
-                    },
-                },
-            ]);
+const confirmarCompra = async () => {
+    if (carrito.length === 0) {
+        return;
+    }
+    
+    const compra: Compra = {
+        id: new Date().getTime().toString(),
+        date: new Date().toLocaleString(),
+        items: carrito,
     };
+
+
+        console.log("Confirmando compra...");
+        await guardarHistorial(compra);
+        await vaciarCarrito();
+        cargarCarrito();
+
+};
+
     
     const eliminarItem = async (id: string) => {
         console.log("Eliminando item con ID:", id);
         await eliminarDelCarrito(id);
-        Alert.alert("Item Eliminado", "El producto ha sido eliminado del carrito.");
         cargarCarrito();
     };
     

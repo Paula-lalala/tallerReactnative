@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Compra } from '@/app/screens/carrito';
 
 const CARITO_STORAGE_KEY = 'carrito';
 
@@ -17,30 +18,36 @@ export const agregarAlCarrito = async (item: any, cantidad: number) => {
 
 export const obtenerCarrito = async () => {
     const carrito = await AsyncStorage.getItem(CARITO_STORAGE_KEY);
-    return carrito ? JSON.parse(carrito) : []; // Devuelve un arreglo vacío si no hay datos
+    return carrito ? JSON.parse(carrito) : [];
 };
 
 export const vaciarCarrito = async () => {
-    await AsyncStorage.removeItem(CARITO_STORAGE_KEY); // Solo elimina el carrito
+    await AsyncStorage.removeItem(CARITO_STORAGE_KEY);
 };
   
 export const obtenerHistorial = async () => {
     const historial = await AsyncStorage.getItem('historial');
-    return historial ? JSON.parse(historial) : []; // Devuelve un arreglo vacío si no hay datos
+    return historial ? JSON.parse(historial) : [];
 };
 
-export const guardarHistorial = async () => {
-    const carrito = await obtenerCarrito(); // Obtiene el carrito actual
-    const historial = await obtenerHistorial(); // Obtiene el historial actual
+export const guardarHistorial = async (compra: Compra) => {
+    try {
+        const historialJSON = await AsyncStorage.getItem('historial');
+        const historial = historialJSON ? JSON.parse(historialJSON) : [];
+        historial.push(compra);
+        await AsyncStorage.setItem('historial', JSON.stringify(historial));
+    } catch (error) {
+        console.error("Error al guardar en el historial:", error);
+    }
+};
 
-    const nuevaCompra = {
-        id: Date.now().toString(),
-        date: new Date().toLocaleString(),
-        items: carrito,
-    };
-
-    console.log("Nueva compra que se agregará al historial:", nuevaCompra); // Verificación de la nueva compra
-    await AsyncStorage.setItem('historial', JSON.stringify([...historial, nuevaCompra])); // Agrega la compra al historial
+export const limpiarHistorial = async () => {
+    try {
+        await AsyncStorage.removeItem('historial');
+        console.log("Historial de compras eliminado");
+    } catch (error) {
+        console.error("Error al limpiar el historial:", error);
+    }
 };
 
   
@@ -50,6 +57,7 @@ export const eliminarDelCarrito = async (id: string) => {
   const nuevoCarrito = carrito.filter((item: any) => item.id !== id);
   await AsyncStorage.setItem(CARITO_STORAGE_KEY, JSON.stringify(nuevoCarrito)); 
 };
+
 
 
 
