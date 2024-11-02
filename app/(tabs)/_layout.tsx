@@ -31,6 +31,15 @@ export default function Layout() {
             ),
           }}
         />
+        <Tabs.Screen
+          name="carrito"
+          options={{
+            title: 'Carrito',
+            tabBarIcon: ({ color, focused }) => (
+              <TabBarIcon name={focused ? 'cart' : 'cart'} color={color} />
+            ),
+          }}
+        />
       </Tabs>
   );
 }
