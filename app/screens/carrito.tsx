@@ -6,6 +6,9 @@ export interface Compra {
   id: string;
   date: string;
   items: CarritoItem[];
+  totalSinEnvio: number;
+  costoEnvio: number;
+  totalConEnvio: number;
 }
 
 export interface CarritoItem {
@@ -38,10 +41,14 @@ const confirmarCompra = async () => {
         setModalVisible(true);
         return;
     }
+    const { totalSinEnvio, costoEnvio, totalConEnvio } = calcularTotal();
     const compra: Compra = {
         id: new Date().getTime().toString(),
-        date: new Date().toLocaleString(),
+        date: new Date().toISOString(),
         items: carrito,
+        totalSinEnvio, 
+        costoEnvio,
+        totalConEnvio,
     };
         console.log("Confirmando compra...");
         await guardarHistorial(compra);
@@ -56,6 +63,8 @@ const confirmarCompra = async () => {
         console.log("Eliminando item con ID:", id);
         await eliminarDelCarrito(id);
         cargarCarrito();
+        setModalMessage("El producto ha sido eliminado del carrito.");
+        setModalVisible(true);
     };
     
     const modificarCantidad = (id: string, cantidad: number) => {
@@ -101,8 +110,10 @@ const confirmarCompra = async () => {
     );
 
     const cancelarPedido = async () => {
-            await vaciarCarrito();
-            await cargarCarrito();
+      await vaciarCarrito();
+      await cargarCarrito();
+      setModalMessage("Se ha cancelado el pedido.");
+      setModalVisible(true);
     };
     
 
