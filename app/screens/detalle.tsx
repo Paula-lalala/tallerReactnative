@@ -77,38 +77,38 @@ const styles = StyleSheet.create({
   container: { 
     flex: 1, 
     padding: 16, 
-    backgroundColor: '#f8f9fa', // Color de fondo más suave
-    borderRadius: 10, // Bordes redondeados
-    shadowColor: '#000', // Sombra para profundidad
+    backgroundColor: '#f8f9fa', 
+    borderRadius: 10,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 }, 
     shadowOpacity: 0.2, 
     shadowRadius: 4, 
-    elevation: 3, // Sombra en Android
+    elevation: 3,
   },
   image: { 
     width: '100%', 
     height: 200, 
     marginBottom: 16, 
-    borderRadius: 10, // Bordes redondeados para la imagen
-    borderColor: '#dee2e6', // Bordes sutiles
+    borderRadius: 10,
+    borderColor: '#dee2e6',
     borderWidth: 1,
   },
   name: { 
-    fontSize: 26, // Tamaño de fuente ligeramente más grande
+    fontSize: 26,
     fontWeight: 'bold',
-    color: '#343a40', // Color de texto más oscuro
+    color: '#343a40',
     marginBottom: 8,
   },
   price: { 
     fontSize: 20, 
-    color: '#28a745', // Color verde más brillante
+    color: '#28a745', 
     marginVertical: 8,
-    fontWeight: '600', // Peso de fuente semi-negrita
+    fontWeight: '600',
   },
   description: { 
     fontSize: 16, 
-    color: '#6c757d', // Color gris
-    lineHeight: 24, // Espaciado entre líneas para mejor legibilidad
+    color: '#6c757d',
+    lineHeight: 24, 
     marginBottom: 16,
   },
   cantidadContainer: { 
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     marginVertical: 16, 
     borderWidth: 1,
-    borderColor: '#ced4da', // Bordes de la cantidad
+    borderColor: '#ced4da',
     borderRadius: 5,
     padding: 8,
   },
@@ -129,22 +129,22 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
-    paddingVertical: 12, // Mayor altura para los botones
+    paddingVertical: 12, 
     paddingHorizontal: 16,
     backgroundColor: '#007BFF',
     borderRadius: 8,
     alignItems: 'center',
-    elevation: 2, // Sombra ligera
+    elevation: 2, 
   },
   buttonText: {
     color: '#fff',
     fontSize: 18,
-    fontWeight: '600', // Peso de fuente semi-negrita
+    fontWeight: '600', 
   },
   buttonContainer: {
     marginVertical: 10,
-    borderRadius: 8, // Asegurarse que los contenedores de botón también tengan bordes redondeados
-    overflow: 'hidden', // Para asegurar que los bordes redondeados se mantengan
+    borderRadius: 8, 
+    overflow: 'hidden', 
   },
   modalContainer: {
     flex: 1,
@@ -158,13 +158,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10,
     alignItems: 'center',
-    elevation: 5, // Sombra para el modal
+    elevation: 5, 
   },
   modalText: {
     fontSize: 18,
     marginBottom: 20,
-    color: '#343a40', // Color del texto en el modal
-    textAlign: 'center', // Centrar el texto
+    color: '#343a40', 
+    textAlign: 'center', 
   },
   modalButton: {
     marginTop: 10,

@@ -31,20 +31,7 @@ const platos: Plato[] = [
 
 const Menu: React.FC = () => {
   const [CategoriaSeleccionada, setCategoriaSeleccionada] = useState<string>('Todas');
-  const router = useRouter();
 
-  const detalle = (item: Plato) => {
-    router.push({
-      pathname: './screens/detalle', // O la ruta correspondiente
-      params: { 
-        id: item.id,
-        name: item.name,
-        image: item.image,
-        price: item.price,
-        description: item.description
-      },
-    });
-    }
   const filteredPlatos = CategoriaSeleccionada === 'Todas'
     ? platos
     : platos.filter(plato => plato.category === CategoriaSeleccionada);
