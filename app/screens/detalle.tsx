@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, Button, TouchableOpacity, Modal, } from 'react-native';
+import { View, Text, Image, StyleSheet, Button, TouchableOpacity, Modal } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { agregarAlCarrito } from '@/hooks/storage';
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, Button, StyleSheet, TouchableOpacity,Modal } from 'react-native';
 import { obtenerCarrito, vaciarCarrito, eliminarDelCarrito, guardarHistorial } from '@/hooks/storage';
 
 export interface Compra {
@@ -19,6 +19,8 @@ export interface CarritoItem {
 
 const Carrito: React.FC = () => {
     const [carrito, setCarrito] = useState<any[]>([]);  
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
 
     useEffect(() => {
         cargarCarrito();
@@ -32,21 +34,21 @@ const Carrito: React.FC = () => {
     
 const confirmarCompra = async () => {
     if (carrito.length === 0) {
+        setModalMessage("No hay nada en el carrito.");
+        setModalVisible(true);
         return;
     }
-    
     const compra: Compra = {
         id: new Date().getTime().toString(),
         date: new Date().toLocaleString(),
         items: carrito,
     };
-
-
         console.log("Confirmando compra...");
         await guardarHistorial(compra);
         await vaciarCarrito();
+        setModalMessage("La compra fue realizada con éxito.");
+        setModalVisible(true);        
         cargarCarrito();
-
 };
 
     
@@ -127,6 +129,19 @@ const confirmarCompra = async () => {
                     <Text style={styles.buttonText}>Cancelar Pedido</Text>
                 </View>
             </TouchableOpacity>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => setModalVisible(false)}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>{modalMessage}</Text>
+                        <Button title="Aceptar" onPress={() => setModalVisible(false)} />
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };
@@ -191,6 +206,23 @@ const styles = StyleSheet.create({
       color: '#fff',
       textAlign: 'center',
       fontWeight: 'bold',
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalView: {
+      width: 300,
+      padding: 20,
+      backgroundColor: 'white',
+      borderRadius: 10,
+      alignItems: 'center',
+    },
+    modalText: {
+      marginBottom: 15,
+      textAlign: 'center',
     },
   });
 
